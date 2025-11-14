@@ -14,7 +14,6 @@ def bfs(graph, start):
                 visited.add(neighbor)
                 queue.append(neighbor)
 
-# Example graph (adjacency list)
 graph = {
     'A': ['B', 'C'],
     'B': ['D', 'E'],
@@ -24,6 +23,5 @@ graph = {
     'F': []
 }
 
-# Run BFS
 print("Breadth-First Search traversal:")
 bfs(graph, 'A')
