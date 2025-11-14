@@ -12,11 +12,9 @@ def a_star(graph, heuristics, start, goal):
             continue
         visited.add(node)
 
-        # Goal test
         if node == goal:
             return g, path
 
-        # Explore neighbors
         for neighbor, cost in graph.get(node, []):
             if neighbor not in visited:
                 g_new = g + cost
@@ -25,7 +23,6 @@ def a_star(graph, heuristics, start, goal):
 
     return float('inf'), []  # If goal not reachable
 
-# Example weighted graph
 graph = {
     'A': [('B', 1), ('C', 3)],
     'B': [('D', 3), ('E', 1)],
@@ -36,7 +33,6 @@ graph = {
     'G': []
 }
 
-# Heuristic values (estimated distance to goal)
 heuristics = {
     'A': 7,
     'B': 6,
