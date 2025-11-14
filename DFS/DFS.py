@@ -8,7 +8,6 @@ def dfs(graph, start, visited=None):
         if neighbor not in visited:
             dfs(graph, neighbor, visited)
 
-# Example graph (adjacency list)
 graph = {
     'A': ['B', 'C'],
     'B': ['D', 'E'],
@@ -18,6 +17,5 @@ graph = {
     'F': []
 }
 
-# Run DFS
 print("Depth-First Search traversal:")
 dfs(graph, 'A')
