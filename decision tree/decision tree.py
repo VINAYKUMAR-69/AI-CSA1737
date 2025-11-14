@@ -1,29 +1,27 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.tree import DecisionTreeClassifier, export_text
-from sklearn.model_selection import train_test_split
 
 # ---------------------------------------
-# 1. READ CSV FILE
+# 1. DATASET INSIDE THE CODE
 # ---------------------------------------
-# Example: dataset.csv should contain:
-# a1,a2,a3,Class
-# True,Hot,High,No
-# True,Hot,High,No
-# False,Hot,High,Yes
-# ...
+data = {
+    "a1": ["True","True","False","False","False","True","True","True","False","False"],
+    "a2": ["Hot","Hot","Hot","Cool","Cool","Cool","Hot","Hot","Cool","Cool"],
+    "a3": ["High","High","High","Normal","Normal","High","High","Normal","Normal","High"],
+    "Class": ["No","No","Yes","Yes","Yes","No","No","Yes","Yes","Yes"]
+}
 
-df = pd.read_csv("dataset.csv")   # <-- change filename if needed
+df = pd.DataFrame(data)
 
 # ---------------------------------------
 # 2. CONVERT STRING LABELS TO NUMBERS
 # ---------------------------------------
 label_encoders = {}
 for column in df.columns:
-    if df[column].dtype == 'object':
-        le = LabelEncoder()
-        df[column] = le.fit_transform(df[column])
-        label_encoders[column] = le
+    le = LabelEncoder()
+    df[column] = le.fit_transform(df[column])
+    label_encoders[column] = le
 
 # ---------------------------------------
 # 3. SPLIT FEATURES & TARGET
@@ -32,36 +30,39 @@ X = df.drop("Class", axis=1)
 y = df["Class"]
 
 # ---------------------------------------
-# 4. TRAIN DECISION TREE (Entropy = ID3)
+# 4. TRAIN DECISION TREE
 # ---------------------------------------
 model = DecisionTreeClassifier(criterion='entropy')
 model.fit(X, y)
 
 # ---------------------------------------
-# 5. PRINT THE DECISION TREE RULES
+# 5. PRINT DECISION TREE RULES
 # ---------------------------------------
 tree_rules = export_text(model, feature_names=list(X.columns))
 print("\n=== DECISION TREE RULES ===")
 print(tree_rules)
 
 # ---------------------------------------
-# 6. PREDICT NEW INPUT
+# 6. TAKE USER INPUT
 # ---------------------------------------
-# Example new sample (edit as required):
+print("\nEnter values for prediction:")
+
+a1_input = input("a1 (True/False): ")
+a2_input = input("a2 (Hot/Cool): ")
+a3_input = input("a3 (High/Normal): ")
+
 new_sample = pd.DataFrame({
-    "a1": ["True"],
-    "a2": ["Hot"],
-    "a3": ["High"]
+    "a1": [a1_input],
+    "a2": [a2_input],
+    "a3": [a3_input]
 })
 
-# Encode new sample using saved label encoders
+# Label encode input
 for column in new_sample.columns:
     new_sample[column] = label_encoders[column].transform(new_sample[column])
 
+# Predict
 prediction = model.predict(new_sample)[0]
-
-# Decode prediction back to original label
 prediction_label = label_encoders["Class"].inverse_transform([prediction])[0]
 
-print("\nPrediction for new input:")
-print(prediction_label)
+print("\nPrediction Result =", prediction_label)
