@@ -1,0 +1,40 @@
+% ----- Facts -----
+
+% Gender
+female(pam).
+female(liz).
+female(ann).
+female(pat).
+
+male(tom).
+male(bob).
+male(jim).
+
+% Parent relationships
+parent(pam, bob).
+parent(tom, bob).
+parent(tom, liz).
+parent(pam, liz).
+parent(bob, ann).
+parent(bob, pat).
+parent(liz, jim).
+
+% ----- Rules -----
+
+% Mother relation
+mother(X, Y) :- parent(X, Y), female(X).
+
+% Father relation
+father(X, Y) :- parent(X, Y), male(X).
+
+% Grandfather relation
+grandfather(X, Y) :- father(X, Z), parent(Z, Y).
+
+% Grandmother relation
+grandmother(X, Y) :- mother(X, Z), parent(Z, Y).
+
+% Sister relation
+sister(X, Y) :- parent(Z, X), parent(Z, Y), female(X), X \= Y.
+
+% Brother relation
+brother(X, Y) :- parent(Z, X), parent(Z, Y), male(X), X \= Y.
